@@ -1,1 +1,1 @@
-# LambdaTest-Data-Driven-Testing-Pattern
+# https-github.com-AutomateThePlanet-LambdaTest-Decorator-Design-Pattern
