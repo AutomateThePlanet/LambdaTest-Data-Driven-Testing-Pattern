@@ -1,21 +1,66 @@
 ﻿using OpenQA.Selenium.Chrome;
-using WebDriverManager.DriverConfigs.Impl;
 using DecoratorDesignPatternTests.Models;
-using DecoratorDesignPatternTests.ThirdVersion;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Safari;
 
-namespace DecoratorDesignPattern.ThirdVersion;
+namespace DataDrivenTestingPatternTests.FirstVersion;
 
-[TestFixture]
-public class ProductPurchaseTests
+[TestFixture("chrome", "114.0", "Windows 11")]
+[TestFixture("Safari", 16, "macOS Big sur")]
+[TestFixture("chrome", "113.0", "Windows 10")]
+[TestFixture("firefox", "122.0", "Linux")]
+[TestFixture("Safari", 17, "macOS Catalina")]
+public class ProductPurchaseTestsCloud
 {
     private IWebDriver _driver;
     private WebSite _webSite;
+    private readonly string browser;
+    private readonly string version;
+    private readonly string operatingSystem;
+
+    public ProductPurchaseTestsCloud(string browser, string version, string operatingSystem)
+    {
+        this.browser = browser;
+        this.version = version;
+        this.operatingSystem = operatingSystem;
+    }
 
     [SetUp]
     public void TestInit()
     {
-        new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
-        _driver = new ChromeDriver();
+        string userName = Environment.GetEnvironmentVariable("LT_USERNAME", EnvironmentVariableTarget.Machine);
+        string accessKey = Environment.GetEnvironmentVariable("LT_ACCESSKEY", EnvironmentVariableTarget.Machine);
+        dynamic options = default(ChromeOptions);
+
+        switch (browser.ToLower())
+        {
+            case "chrome":
+                options = new ChromeOptions();
+                options.BrowserVersion = version;
+                break;
+            case "firefox":
+                options = new FirefoxOptions();
+                options.BrowserVersion = version;
+                break;
+            case "edge":
+                options = new EdgeOptions();
+                break;
+            case "safari":
+                options = new SafariOptions();
+                break;
+        }
+
+        options.AddAdditionalCapability("user", userName, true);
+        options.AddAdditionalCapability("accessKey", accessKey, true);
+
+        var timestamp = $"{DateTime.Now:yyyyMMdd.HHmm}";
+        options.AddAdditionalCapability("build", timestamp, true);
+        options.PlatformName = operatingSystem;
+
+        _driver = new RemoteWebDriver(new Uri($"https://{userName}:{accessKey}@hub.lambdatest.com/wd/hub"), options);
         _driver.Manage().Window.Maximize();
 
         _driver.Navigate().GoToUrl("https://ecommerce-playground.lambdatest.io/");
@@ -38,7 +83,7 @@ public class ProductPurchaseTests
         {
             Name = "iPod Touch",
             Id = 32,
-            UnitPrice = "$194.00",
+            Price = "$194.00",
             Model = "Product 5",
             Brand = "Apple",
             Weight = "5.00kg"
@@ -48,7 +93,7 @@ public class ProductPurchaseTests
         {
             Name = "iPod Shuffle",
             Id = 34,
-            UnitPrice = "$182.00",
+            Price = "$182.00",
             Model = "Product 7",
             Brand = "Apple",
             Weight = "5.00kg"
@@ -74,7 +119,7 @@ public class ProductPurchaseTests
         {
             Name = "iPod Touch",
             Id = 32,
-            UnitPrice = "$194.00",
+            Price = "$194.00",
             Model = "Product 5",
             Brand = "Apple",
             Weight = "5.00kg",
@@ -102,7 +147,7 @@ public class ProductPurchaseTests
             City = "Metropolis",
             PostCode = "12345",
             Country = "United States",
-            Region = "Texas"
+            Region = "Alabama"
         };
 
         _webSite.HomePage.SearchProduct("ip");

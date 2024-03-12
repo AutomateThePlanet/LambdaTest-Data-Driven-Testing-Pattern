@@ -1,6 +1,6 @@
 ﻿using DecoratorDesignPatternTests.Models;
 
-namespace DecoratorDesignPatternTests.ThirdVersion;
+namespace DataDrivenTestingPatternTests.ZeroVersion;
 
 public class ProductPage : WebPage
 {

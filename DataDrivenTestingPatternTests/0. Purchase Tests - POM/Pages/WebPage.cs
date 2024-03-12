@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
-namespace DecoratorDesignPatternTests.ThirdVersion;
+namespace DataDrivenTestingPatternTests.ZeroVersion;
 public abstract class WebPage
 {
     protected readonly IWebDriver _driver;

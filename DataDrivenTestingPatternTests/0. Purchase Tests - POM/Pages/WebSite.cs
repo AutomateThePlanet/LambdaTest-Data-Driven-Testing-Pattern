@@ -1,4 +1,4 @@
-﻿namespace DecoratorDesignPatternTests.FourthVersion;
+﻿namespace DataDrivenTestingPatternTests.ZeroVersion;
 public class WebSite
 {
     private readonly IWebDriver _driver;

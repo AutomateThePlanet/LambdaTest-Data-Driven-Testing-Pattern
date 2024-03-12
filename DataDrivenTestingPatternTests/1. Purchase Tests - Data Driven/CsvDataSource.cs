@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CsvHelper;
 
-namespace DataDrivenTestingPatternTests.FourthVersion;
+namespace DataDrivenTestingPatternTests.FirstVersion;
 public class CsvDataSource
 {
     public static IEnumerable<TestCaseData> GetDataFromCsv()

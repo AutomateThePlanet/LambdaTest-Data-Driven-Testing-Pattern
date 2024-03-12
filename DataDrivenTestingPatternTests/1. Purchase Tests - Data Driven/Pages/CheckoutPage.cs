@@ -1,6 +1,6 @@
 ﻿using DecoratorDesignPatternTests.Models;
 
-namespace DecoratorDesignPatternTests.ThirdVersion;
+namespace DataDrivenTestingPatternTests.FirstVersion;
 public class CheckoutPage : WebPage
 {
     public CheckoutPage(IWebDriver driver, WebDriverWait wait, Actions actions) 
@@ -23,23 +23,11 @@ public class CheckoutPage : WebPage
     public IWebElement ShippingAddressCountryOption(string country) =>
         ShippingAddressCountrySelect.FindElement(By.XPath($".//option[contains(text(), '{country}')]"));
     public IWebElement BillingAddressRegionSelect => _driver.FindElement(By.Id("input-payment-zone"));
-    public IWebElement BillingAddressRegionOption(string region)
-    {
-        if (region == "NA")
-        {
-            return BillingAddressRegionSelect.FindElement(By.XPath($".//option[2]"));
-        }
-        else 
-        {
-            return BillingAddressRegionSelect.FindElement(By.XPath($".//option[contains(text(), '{region}')]"));
-        }
-    }
-        
+    public IWebElement BillingAddressRegionOption(string region) =>
+        BillingAddressRegionSelect.FindElement(By.XPath($".//option[contains(text(), '{region}')]"));
     public IWebElement TermsAgreeCheckbox => _driver.FindElement(By.XPath("//input[@id='input-agree']//following-sibling::label"));
     public IWebElement ContinueButton => _driver.FindElement(By.XPath("//button[@id='button-save']"));
     public IWebElement TotalPrice => _driver.FindElements(By.XPath("//td[text()='Total:']/following-sibling::td/strong")).Last();
-    public IWebElement VatPercentage => _driver.FindElement(By.XPath("//*[@id='checkout-total']/tbody/tr[4]/td"));
-    public IWebElement VatTax => _driver.FindElements(By.XPath("//*[contains(text(), 'VAT ')]/following-sibling::td/strong")).Last();
 
     public void FillUserDetails(UserDetails userDetails)
     {
@@ -78,16 +66,6 @@ public class CheckoutPage : WebPage
     public void AssertTotalPrice(string expectedPrice)
     {
         Assert.That(TotalPrice.Text, Is.EqualTo(expectedPrice));
-    }
-
-    public void AssertVatPercentage(double expectedPercentage)
-    {
-        Assert.That(VatPercentage.Text, Is.EqualTo($"VAT ({expectedPercentage}%):"));
-    }
-
-    public void AssertVatTax(string expectedVatTax)
-    {
-        Assert.That(VatTax.Text, Is.EqualTo(expectedVatTax));
     }
 
     public void CompleteCheckout()

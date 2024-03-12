@@ -1,4 +1,4 @@
-﻿namespace DecoratorDesignPatternTests.FourthVersion;
+﻿namespace DataDrivenTestingPatternTests.ZeroVersion;
 public class CartPage : WebPage
 {
     public CartPage(IWebDriver driver, WebDriverWait wait, Actions actions) 
