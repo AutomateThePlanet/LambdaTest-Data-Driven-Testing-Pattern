@@ -5,12 +5,6 @@ using DecoratorDesignPatternTests.Models;
 namespace DataDrivenTestingPatternTests.FirstVersion;
 
 [TestFixture]
-[TestFixture("chrome", "114.0", "Windows 11")]
-[TestFixture("Safari", 11)]
-
-[TestFixture("chrome", "113.0", "Windows 10")]
-[TestFixture("firefox", "11.0", "Linux")]
-[TestFixture("Safari", 11)]
 public class ProductPurchaseTests
 {
     private IWebDriver _driver;
@@ -138,9 +132,9 @@ public class ProductPurchaseTests
         _webSite.CheckoutPage.FillUserDetails(userDetails);
         _webSite.CheckoutPage.FillBillingAddress(billingAddress);
 
-        //_webSite.CheckoutPage.AssertVatPercentage(vatTaxPercentage);
-        //_webSite.CheckoutPage.AssertVatTax(expectedVat);
-        
+        _webSite.CheckoutPage.AssertVatPercentage(vatTaxPercentage);
+        _webSite.CheckoutPage.AssertVatTax(expectedVat);
+
         _webSite.CheckoutPage.AssertTotalPrice(expectedCheckoutTotal);
 
         _webSite.CheckoutPage.AgreeToTerms();
@@ -196,8 +190,8 @@ public class ProductPurchaseTests
         _webSite.CheckoutPage.FillUserDetails(userDetails);
         _webSite.CheckoutPage.FillBillingAddress(billingAddress);
 
-        //_webSite.CheckoutPage.AssertVatPercentage(vatTaxPercentage);
-        //_webSite.CheckoutPage.AssertVatTax(expectedVat);
+        _webSite.CheckoutPage.AssertVatPercentage(vatTaxPercentage);
+        _webSite.CheckoutPage.AssertVatTax(expectedVat);
 
         _webSite.CheckoutPage.AssertTotalPrice(expectedCheckoutTotal);
 

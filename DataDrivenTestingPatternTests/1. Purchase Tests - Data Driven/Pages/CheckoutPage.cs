@@ -1,4 +1,5 @@
-﻿using DecoratorDesignPatternTests.Models;
+﻿using DataDrivenTestingPatternTests.SecondVersion;
+using DecoratorDesignPatternTests.Models;
 
 namespace DataDrivenTestingPatternTests.FirstVersion;
 public class CheckoutPage : WebPage
@@ -28,7 +29,9 @@ public class CheckoutPage : WebPage
     public IWebElement TermsAgreeCheckbox => _driver.FindElement(By.XPath("//input[@id='input-agree']//following-sibling::label"));
     public IWebElement ContinueButton => _driver.FindElement(By.XPath("//button[@id='button-save']"));
     public IWebElement TotalPrice => _driver.FindElements(By.XPath("//td[text()='Total:']/following-sibling::td/strong")).Last();
-
+    public IWebElement VatPercentage => _driver.FindElement(By.XPath("//*[@id='checkout-total']/tbody/tr[4]/td"));
+    public IWebElement VatTax => _driver.FindElements(By.XPath("//*[contains(text(), 'VAT ')]/following-sibling::td/strong")).Last();
+   
     public void FillUserDetails(UserDetails userDetails)
     {
         FirstNameInput.SendKeys(userDetails.FirstName);
@@ -66,6 +69,16 @@ public class CheckoutPage : WebPage
     public void AssertTotalPrice(string expectedPrice)
     {
         Assert.That(TotalPrice.Text, Is.EqualTo(expectedPrice));
+    }
+
+    public void AssertVatPercentage(double expectedPercentage)
+    {
+        Assert.That(VatPercentage.Text, Is.EqualTo($"VAT ({expectedPercentage}%):"));
+    }
+
+    public void AssertVatTax(string expectedVatTax)
+    {
+        Assert.That(VatTax.Text, Is.EqualTo(expectedVatTax));
     }
 
     public void CompleteCheckout()
